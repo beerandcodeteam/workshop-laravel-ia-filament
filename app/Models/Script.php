@@ -21,11 +21,16 @@ class Script extends Model
         'era',
         'suggested_style',
         'expected_impact',
+        'processed_at'
     ];
 
-    protected $casts = [
-        'year' => 'integer',
-    ];
+    protected function casts()
+    {
+        return [
+            'year' => 'integer',
+            'processed_at' => 'datetime'
+        ];
+    }
 
     /**
      * Get the writer of this script.

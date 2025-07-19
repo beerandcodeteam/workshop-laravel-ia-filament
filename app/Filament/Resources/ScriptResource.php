@@ -45,6 +45,15 @@ class ScriptResource extends Resource
                         Tabs\Tab::make('Dados Básicos')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
+                                Forms\Components\FileUpload::make('file_path')
+                                    ->label('Arquivo do roteiro em PDF')
+                                    ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'])
+                                    ->directory('scripts')
+                                    ->required(),
+                            ])->visible(fn (string $operation): bool => $operation === 'create'),
+                        Tabs\Tab::make('Dados Básicos')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
                                 Section::make('Informações Principais')
                                     ->schema([
                                         Forms\Components\TextInput::make('title')
@@ -93,7 +102,7 @@ class ScriptResource extends Resource
                                             ->rows(4)
                                             ->columnSpanFull(),
                                     ]),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
 
                         Tabs\Tab::make('Análise Criativa')
                             ->icon('heroicon-o-light-bulb')
@@ -119,7 +128,7 @@ class ScriptResource extends Resource
                                             ->placeholder('Selecione o impacto esperado'),
                                     ])
                                     ->columns(3),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
 
                         Tabs\Tab::make('Elementos Narrativos')
                             ->icon('heroicon-o-book-open')
@@ -163,7 +172,7 @@ class ScriptResource extends Resource
                                             ]),
                                     ])
                                     ->columns(1),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
 
                         Tabs\Tab::make('Elementos Visuais')
                             ->icon('heroicon-o-camera')
@@ -207,7 +216,7 @@ class ScriptResource extends Resource
                                             ]),
                                     ])
                                     ->columns(1),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
 
                         Tabs\Tab::make('Ritmo e Emoção')
                             ->icon('heroicon-o-heart')
@@ -239,7 +248,7 @@ class ScriptResource extends Resource
                                             ]),
                                     ])
                                     ->columns(2),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
 
                         Tabs\Tab::make('Personagens')
                             ->icon('heroicon-o-users')
@@ -262,7 +271,7 @@ class ScriptResource extends Resource
                                             ]),
                                     ])
                                     ->columns(1),
-                            ]),
+                            ])->visible(fn (string $operation): bool => $operation !== 'create'),
                     ])
                     ->columnSpanFull(),
             ]);
@@ -421,7 +430,6 @@ class ScriptResource extends Resource
     {
         return [
             'index' => Pages\ListScripts::route('/'),
-            'create' => Pages\CreateScript::route('/create'),
             'edit' => Pages\EditScript::route('/{record}/edit'),
         ];
     }
