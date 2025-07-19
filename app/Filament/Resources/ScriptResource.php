@@ -372,14 +372,6 @@ class ScriptResource extends Resource
                     ->relationship('writer', 'name')
                     ->searchable()
                     ->preload(),
-
-                SelectFilter::make('year')
-                    ->label('Ano')
-                    ->options(function () {
-                        $years = Script::pluck('year')->unique()->sort()->toArray();
-                        return array_combine($years, $years);
-                    }),
-
                 SelectFilter::make('expected_impact')
                     ->label('Impacto Esperado')
                     ->options([
@@ -388,7 +380,6 @@ class ScriptResource extends Resource
                         'alto' => 'Alto',
                         'muito_alto' => 'Muito Alto',
                     ]),
-
                 SelectFilter::make('genres')
                     ->label('Gênero')
                     ->relationship('genres', 'name')
@@ -424,6 +415,11 @@ class ScriptResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereNotNull('processed_at');
     }
 
     public static function getPages(): array
