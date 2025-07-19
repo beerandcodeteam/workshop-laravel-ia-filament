@@ -13,7 +13,13 @@ class ListScripts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Novo Roteiro'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Roteiros';
     }
 }

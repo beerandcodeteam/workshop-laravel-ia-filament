@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('scripts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->foreignId('writer_id')->constrained('writers')->onDelete('cascade');
-            $table->year('year');
+            $table->string('title')->nullable();
+            $table->foreignId('writer_id')->nullable()->constrained('writers')->onDelete('cascade');
+            $table->year('year')->nullable();;
             $table->string('file_path');
-            $table->text('one_liner');
-            $table->text('short_synopsis');
+            $table->text('one_liner')->nullable();;
+            $table->text('short_synopsis')->nullable();
             $table->string('era')->nullable();
             $table->string('suggested_style')->nullable();
             $table->string('expected_impact')->nullable();
