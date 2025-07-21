@@ -8,6 +8,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProcessScript implements ShouldQueue
 {
@@ -41,14 +42,18 @@ class ProcessScript implements ShouldQueue
         Log::info("Arquivo criado: {$langflow_file_path}");
 
         $payload = [
+            'session_id' => Str::uuid(),
             'tweaks' => [
-                'File-wzyW1' => [
+                'File-c58Jg' => [
                     'path' => [
                         $langflow_file_path,
                     ],
                 ],
-                "DataFrameOperations-6dXM2" => [
+                "DataFrameOperations-Jj9i1" => [
                     "new_column_value" => (string)$this->script->id,
+                ],
+                "Prompt Template-7xDbq" => [
+                    "script_id" => (string)$this->script->id,
                 ]
             ],
         ];
@@ -57,7 +62,7 @@ class ProcessScript implements ShouldQueue
             ->timeout(0)
             ->asJson()
             ->post(
-                'run/d53a5330-8c52-4157-a0b9-989ad2bccd2e?stream=false',
+                'run/f82fcc21-baa6-403c-8717-8771033bed23?stream=false',
                 $payload
             );
 

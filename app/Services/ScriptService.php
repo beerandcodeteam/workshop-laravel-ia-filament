@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Script;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class ScriptService
 {
@@ -23,15 +24,9 @@ class ScriptService
     {
         $script = Script::create($data);
 
-        $script->genres()->sync(Arr::get($data, 'genre_ids', []));
-        $script->characters()->sync(Arr::get($data, 'character_ids', []));
-        $script->conflicts()->sync(Arr::get($data, 'conflict_ids', []));
-        $script->themes()->sync(Arr::get($data, 'theme_ids', []));
-        $script->environments()->sync(Arr::get($data, 'environment_ids', []));
-        $script->colorPalettes()->sync(Arr::get($data, 'color_palette_ids', []));
-        $script->visualElements()->sync(Arr::get($data, 'visual_element_ids', []));
-        $script->narrativePaces()->sync(Arr::get($data, 'narrative_pace_ids', []));
-        $script->emotionalCurves()->sync(Arr::get($data, 'emotional_curve_ids', []));
+        $script->genres()->sync(explode(",", $data['genre_ids']));
+        $script->characters()->sync(explode(",", $data['character_ids']));
+        $script->themes()->sync(explode(",", $data['theme_ids']));
 
         return $script;
     }
@@ -39,9 +34,19 @@ class ScriptService
     /**
      * Atualiza um script
      */
-    public function update(Script $script, array $data): Script
+    public function update(int $script_id, array $data): Script
     {
+        $script = Script::find($script_id);
+        Log::warning("ATUALIZANDO SCRIPT");
+        Log::info($data);
+
+        $data['processed_at'] = now();
+
         $script->update($data);
+        $script->genres()->sync(explode(",", $data['genre_ids']));
+        $script->characters()->sync(explode(",", $data['character_ids']));
+        $script->themes()->sync(explode(",", $data['theme_ids']));
+
         return $script->fresh();
     }
 
