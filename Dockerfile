@@ -36,6 +36,7 @@ RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 ENV SUPERVISOR_PHP_USER="sail"
+
 # Expor portas
 EXPOSE 8090
 
