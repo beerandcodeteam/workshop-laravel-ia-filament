@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Http::macro('langFlow', function () {
+            return Http::withHeaders([
+                'x-api-key' => config('langflow.api_key'),
+            ])->baseUrl(config('langflow.url'));
+        });
+
     }
 }

@@ -14,6 +14,7 @@ use App\Models\NarrativePace;
 use App\Models\VisualElement;
 use App\Models\EmotionalCurve;
 use App\Models\Character;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
