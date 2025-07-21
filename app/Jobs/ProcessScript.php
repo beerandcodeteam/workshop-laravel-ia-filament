@@ -6,6 +6,7 @@ use App\Models\Script;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessScript implements ShouldQueue
@@ -37,6 +38,8 @@ class ProcessScript implements ShouldQueue
 
         $langflow_file_path = $result['file_path'];
 
+        Log::info("Arquivo criado: {$langflow_file_path}");
+
         $payload = [
             'tweaks' => [
                 'File-wzyW1' => [
@@ -58,6 +61,7 @@ class ProcessScript implements ShouldQueue
                 $payload
             );
 
-        throw_if(!$response->successful(), "Erro ao processar arquivo");
+        Log::info("RESULTAADO DO ENVIO");
+        Log::info($response->json());
     }
 }

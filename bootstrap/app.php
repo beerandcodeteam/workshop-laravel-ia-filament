@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->validateCsrfTokens(except: [
+            'mcp',           // For streamable transport (default)
+            'mcp/*',   // For legacy transport (if enabled)
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

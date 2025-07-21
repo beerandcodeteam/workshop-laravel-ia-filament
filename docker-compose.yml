@@ -47,6 +47,20 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    mcp:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        restart: unless-stopped
+        ports:
+            - "8090:8090"
+        volumes:
+            - .:/var/www/html
+            - ./docker/supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
