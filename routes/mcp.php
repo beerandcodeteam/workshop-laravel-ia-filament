@@ -52,6 +52,10 @@ Mcp::tool([ScriptService::class, 'list'])
     ->name('listaScripts')
     ->description('Lista todos os scripts com relacionamentos');
 
+Mcp::tool([ScriptService::class, 'findById'])
+    ->name('findScript')
+    ->description('Retorna o roteiro referente ao ID passado');
+
 Mcp::tool([ScriptService::class, 'update'])
     ->name('atualizaScript')
     ->description('Atualiza um script existente')

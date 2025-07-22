@@ -18,9 +18,17 @@ class ThemeService
     /**
      * Cria um novo tema
      */
-    public function create(array $data): Theme
+    public function create(array $data): string|Theme
     {
-        return Theme::create($data);
+        try {
+            return Theme::firstOrCreate(
+                ['name' => $data['name']],
+                $data
+            );
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**

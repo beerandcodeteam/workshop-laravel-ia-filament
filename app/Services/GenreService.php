@@ -18,9 +18,16 @@ class GenreService
     /**
      * Cria um novo gênero
      */
-    public function create(array $data): Genre
+    public function create(array $data): string|Genre
     {
-        return Genre::create($data);
+        try {
+            return Genre::firstOrCreate(
+                ['name' => $data['name']],
+                $data
+            );
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**

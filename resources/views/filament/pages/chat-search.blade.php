@@ -8,8 +8,18 @@
                     <div class="max-w-lg px-4 py-3 rounded-2xl shadow
                     {{ $message['sender'] === 'user'
                         ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100' }}">
-                        {{ $message['text'] }}
+                        : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100' }}"
+                         @if($loop->last) wire:stream="iaresponse" @endif
+                    >
+                        {!! $message['text'] !!}
+
+                        @if($loop->last && $is_streaming)
+                            <div class="flex space-x-1">
+                                <span class="inline-block w-2 h-2 bg-current rounded-full animate-dot-1"></span>
+                                <span class="inline-block w-2 h-2 bg-current rounded-full animate-dot-2"></span>
+                                <span class="inline-block w-2 h-2 bg-current rounded-full animate-dot-3"></span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -41,5 +51,6 @@
                 </span>
             </button>
         </div>
+
     </div>
 </x-filament-panels::page>

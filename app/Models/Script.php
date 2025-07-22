@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,17 @@ class Script extends Model
         'expected_impact',
         'processed_at'
     ];
+
+    protected $appends = [
+        'download_url'
+    ];
+
+    protected function downloadUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->file_path ? asset('storage/' . $this->file_path) : null,
+        );
+    }
 
     protected function casts()
     {

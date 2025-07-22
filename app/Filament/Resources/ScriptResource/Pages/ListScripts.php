@@ -3,11 +3,12 @@
 namespace App\Filament\Resources\ScriptResource\Pages;
 
 use App\Filament\Resources\ScriptResource;
-use App\Jobs\ProcessScript;
+use App\Jobs\CreateRagFromScript;
+use App\Jobs\ProcessScriptData;
 use App\Models\Script;
 use Filament\Actions;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Bus;
 
 class ListScripts extends ListRecords
 {
@@ -20,7 +21,10 @@ class ListScripts extends ListRecords
                 ->label('Novo Roteiro')
                 ->modalHeading('Criar Novo Roteiro')
                 ->after(function (Script $record): void {
-                    ProcessScript::dispatch($record);
+                    Bus::chain([
+                        new CreateRagFromScript($record),
+                        (new ProcessScriptData($record))->delay(now()->addMinute()),
+                    ])->dispatch();
                 }),
         ];
     }

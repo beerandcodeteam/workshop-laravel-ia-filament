@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ProcessScript implements ShouldQueue
+class CreateRagFromScript implements ShouldQueue
 {
     use Queueable;
 
@@ -42,19 +42,16 @@ class ProcessScript implements ShouldQueue
         Log::info("Arquivo criado: {$langflow_file_path}");
 
         $payload = [
-            'session_id' => Str::uuid(),
+            'session_id' => $this->script->id . '--' . now(),
             'tweaks' => [
-                'File-c58Jg' => [
+                'File-' . config('langflow.rag_file_id') => [
                     'path' => [
                         $langflow_file_path,
                     ],
                 ],
-                "DataFrameOperations-Jj9i1" => [
-                    "new_column_value" => (string)$this->script->id,
+                "DataFrameOperations-" . config('langflow.rag_data_frame_id') => [
+                    "new_column_value" => (string) $this->script->id,
                 ],
-                "Prompt Template-7xDbq" => [
-                    "script_id" => (string)$this->script->id,
-                ]
             ],
         ];
 
@@ -62,11 +59,8 @@ class ProcessScript implements ShouldQueue
             ->timeout(0)
             ->asJson()
             ->post(
-                'run/f82fcc21-baa6-403c-8717-8771033bed23?stream=false',
+                'run/' . config('langflow.rag_flow_id') . '?stream=false',
                 $payload
             );
-
-        Log::info("RESULTAADO DO ENVIO");
-        Log::info($response->json());
     }
 }

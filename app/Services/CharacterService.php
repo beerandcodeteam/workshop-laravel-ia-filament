@@ -18,9 +18,13 @@ class CharacterService
     /**
      * Cria um novo personagem
      */
-    public function create(array $data): Character
+    public function create(array $data): string|Character
     {
-        return Character::create($data);
+        try {
+            return Character::create($data);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**

@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class ScriptService
 {
+
+
+    public Script $script;
+    public $status = [];
     /**
      * Lista todos os scripts
      */
@@ -34,20 +38,34 @@ class ScriptService
     /**
      * Atualiza um script
      */
-    public function update(int $script_id, array $data): Script
+    public function update(int $script_id, array $data): array|Script
     {
-        $script = Script::find($script_id);
+        $this->script = Script::find($script_id);
         Log::warning("ATUALIZANDO SCRIPT");
         Log::info($data);
 
         $data['processed_at'] = now();
 
-        $script->update($data);
-        $script->genres()->sync(explode(",", $data['genre_ids']));
-        $script->characters()->sync(explode(",", $data['character_ids']));
-        $script->themes()->sync(explode(",", $data['theme_ids']));
+        $this->script->update($data);
+        $this->sync('genres', $data['genre_ids'])
+            ->sync('characters', $data['character_ids'])
+            ->sync('themes', $data['theme_ids']);
 
-        return $script->fresh();
+        $this->status['script'] = $this->script->fresh();
+
+        return $this->status;
+    }
+
+    public function sync($relation, $ids)
+    {
+        try {
+            $this->script->{$relation}()->sync(explode(",", $ids));
+            $this->status[$relation] = "ok";
+        } catch (\Exception $exception) {
+            $this->status[$relation] = $exception->getMessage();
+        }
+
+        return $this;
     }
 
     /**
@@ -79,11 +97,6 @@ class ScriptService
             'genres',
             'conflicts',
             'themes',
-            'environments',
-            'colorPalettes',
-            'narrativePaces',
-            'visualElements',
-            'emotionalCurves',
             'characters'
         ])->find($id);
     }

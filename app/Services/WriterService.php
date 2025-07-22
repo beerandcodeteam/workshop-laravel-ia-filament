@@ -18,9 +18,16 @@ class WriterService
     /**
      * Cria um novo escritor
      */
-    public function create(array $data): Writer
+    public function create(array $data): string|Writer
     {
-        return Writer::create($data);
+        try {
+            return Writer::firstOrCreate(
+                ['name' => $data['name']],
+                $data
+            );
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**

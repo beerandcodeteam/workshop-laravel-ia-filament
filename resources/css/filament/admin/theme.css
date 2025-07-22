@@ -1,3 +1,26 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
 @config 'tailwind.config.js';
+
+@keyframes bounce-dot {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-16px);
+    }
+}
+
+.animate-dot-1 {
+    animation: bounce-dot 1.2s infinite;
+}
+
+.animate-dot-2 {
+    animation: bounce-dot 1.2s infinite;
+    animation-delay: 0.2s;
+}
+
+.animate-dot-3 {
+    animation: bounce-dot 1.2s infinite;
+    animation-delay: 0.4s;
+}
