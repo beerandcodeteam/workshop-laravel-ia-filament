@@ -1,0 +1,4 @@
+#!/bin/sh
+php artisan mcp:discover
+composer dump-autoload
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
