@@ -7,13 +7,6 @@ use App\Services\{
     GenreService,
     CharacterService,
     ThemeService,
-    ConflictService,
-    EnvironmentService,
-    ColorPaletteService,
-    NarrativePaceService,
-    VisualElementService,
-    EmotionalCurveService,
-    UserService
 };
 
 // ================================
@@ -127,6 +120,7 @@ Mcp::tool([ScriptService::class, 'update'])
 Mcp::tool([GenreService::class, 'list'])
     ->name('listaGeneros')
     ->description('Lista todos os gêneros de filmes cadastrados');
+
 
 Mcp::tool([GenreService::class, 'create'])
     ->name('cadastraGenero')
